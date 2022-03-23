@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "oltv1",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-03-20T23:06:40.748Z"
+}

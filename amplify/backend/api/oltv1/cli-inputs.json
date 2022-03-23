@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "oltv1",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/christypark/oltv1/amplify/backend/api/oltv1/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 7,
+      "apiKeyExpirationDate": "2022-03-27T23:06:33.004Z",
+      "keyDescription": "oltv1-api"
+    },
+    "conflictResolution": {},
+    "additionalAuthTypes": []
+  }
+}

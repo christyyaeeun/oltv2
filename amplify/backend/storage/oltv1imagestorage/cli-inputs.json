@@ -1,0 +1,14 @@
+{
+  "resourceName": "oltv1imagestorage",
+  "policyUUID": "1f611115",
+  "bucketName": "oltv1-storage",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
