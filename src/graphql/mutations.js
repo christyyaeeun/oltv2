@@ -1,6 +1,93 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
+      id
+      body
+      user {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      timelineID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      commentUserId
+    }
+  }
+`;
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
+      id
+      body
+      user {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      timelineID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      commentUserId
+    }
+  }
+`;
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
+      id
+      body
+      user {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      timelineID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      commentUserId
+    }
+  }
+`;
 export const createTodo = /* GraphQL */ `
   mutation CreateTodo(
     $input: CreateTodoInput!
@@ -67,11 +154,50 @@ export const createTimeline = /* GraphQL */ `
       id
       description
       postTime
+      author {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      content {
+        id
+        source
+        type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      comments {
+        items {
+          id
+          body
+          timelineID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          commentUserId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      timelineAuthorId
+      timelineContentId
       owner
     }
   }
@@ -85,11 +211,50 @@ export const updateTimeline = /* GraphQL */ `
       id
       description
       postTime
+      author {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      content {
+        id
+        source
+        type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      comments {
+        items {
+          id
+          body
+          timelineID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          commentUserId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      timelineAuthorId
+      timelineContentId
       owner
     }
   }
@@ -103,11 +268,50 @@ export const deleteTimeline = /* GraphQL */ `
       id
       description
       postTime
+      author {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      content {
+        id
+        source
+        type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      comments {
+        items {
+          id
+          body
+          timelineID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          commentUserId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      timelineAuthorId
+      timelineContentId
       owner
     }
   }

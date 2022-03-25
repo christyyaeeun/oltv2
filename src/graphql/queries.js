@@ -1,6 +1,106 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getComment = /* GraphQL */ `
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
+      id
+      body
+      user {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      timelineID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      commentUserId
+    }
+  }
+`;
+export const listComments = /* GraphQL */ `
+  query ListComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        body
+        user {
+          id
+          username
+          profilePic
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        timelineID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        commentUserId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncComments = /* GraphQL */ `
+  query SyncComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncComments(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        body
+        user {
+          id
+          username
+          profilePic
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        timelineID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        commentUserId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getTodo = /* GraphQL */ `
   query GetTodo($id: ID!) {
     getTodo(id: $id) {
@@ -77,11 +177,50 @@ export const getTimeline = /* GraphQL */ `
       id
       description
       postTime
+      author {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      content {
+        id
+        source
+        type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      comments {
+        items {
+          id
+          body
+          timelineID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          commentUserId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      timelineAuthorId
+      timelineContentId
       owner
     }
   }
@@ -97,11 +236,39 @@ export const listTimelines = /* GraphQL */ `
         id
         description
         postTime
+        author {
+          id
+          username
+          profilePic
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        content {
+          id
+          source
+          type
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        comments {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        timelineAuthorId
+        timelineContentId
         owner
       }
       nextToken
@@ -126,11 +293,39 @@ export const syncTimelines = /* GraphQL */ `
         id
         description
         postTime
+        author {
+          id
+          username
+          profilePic
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        content {
+          id
+          source
+          type
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          owner
+        }
+        comments {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        timelineAuthorId
+        timelineContentId
         owner
       }
       nextToken

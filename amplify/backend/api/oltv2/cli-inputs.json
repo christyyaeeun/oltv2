@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "oltv2",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-a0fcd40d-7fce-484d-aaa8-c65e435e7626/amplify/backend/api/oltv2/schema.graphql",
+    "gqlSchemaPath": "/Users/christypark/oltv1/amplify/backend/api/oltv2/schema.graphql",
     "defaultAuthType": {
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "autholtv2"
@@ -11,7 +11,39 @@
     "conflictResolution": {
       "defaultResolutionStrategy": {
         "type": "AUTOMERGE"
-      }
+      },
+      "perModelResolutionStrategy": [
+        {
+          "resolutionStrategy": {
+            "type": "AUTOMERGE"
+          },
+          "entityName": "Comment"
+        },
+        {
+          "resolutionStrategy": {
+            "type": "AUTOMERGE"
+          },
+          "entityName": "Todo"
+        },
+        {
+          "resolutionStrategy": {
+            "type": "AUTOMERGE"
+          },
+          "entityName": "Timeline"
+        },
+        {
+          "resolutionStrategy": {
+            "type": "AUTOMERGE"
+          },
+          "entityName": "User"
+        },
+        {
+          "resolutionStrategy": {
+            "type": "AUTOMERGE"
+          },
+          "entityName": "Content"
+        }
+      ]
     },
     "additionalAuthTypes": [
       {

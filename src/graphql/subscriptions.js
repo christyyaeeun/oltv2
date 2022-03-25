@@ -1,6 +1,84 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateComment = /* GraphQL */ `
+  subscription OnCreateComment {
+    onCreateComment {
+      id
+      body
+      user {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      timelineID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      commentUserId
+    }
+  }
+`;
+export const onUpdateComment = /* GraphQL */ `
+  subscription OnUpdateComment {
+    onUpdateComment {
+      id
+      body
+      user {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      timelineID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      commentUserId
+    }
+  }
+`;
+export const onDeleteComment = /* GraphQL */ `
+  subscription OnDeleteComment {
+    onDeleteComment {
+      id
+      body
+      user {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      timelineID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      commentUserId
+    }
+  }
+`;
 export const onCreateTodo = /* GraphQL */ `
   subscription OnCreateTodo($owner: String) {
     onCreateTodo(owner: $owner) {
@@ -55,11 +133,50 @@ export const onCreateTimeline = /* GraphQL */ `
       id
       description
       postTime
+      author {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      content {
+        id
+        source
+        type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      comments {
+        items {
+          id
+          body
+          timelineID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          commentUserId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      timelineAuthorId
+      timelineContentId
       owner
     }
   }
@@ -70,11 +187,50 @@ export const onUpdateTimeline = /* GraphQL */ `
       id
       description
       postTime
+      author {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      content {
+        id
+        source
+        type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      comments {
+        items {
+          id
+          body
+          timelineID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          commentUserId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      timelineAuthorId
+      timelineContentId
       owner
     }
   }
@@ -85,11 +241,50 @@ export const onDeleteTimeline = /* GraphQL */ `
       id
       description
       postTime
+      author {
+        id
+        username
+        profilePic
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      content {
+        id
+        source
+        type
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      comments {
+        items {
+          id
+          body
+          timelineID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          commentUserId
+        }
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      timelineAuthorId
+      timelineContentId
       owner
     }
   }
