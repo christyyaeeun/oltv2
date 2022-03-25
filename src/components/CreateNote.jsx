@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './Button';
 
-const CreateTodo = ({
+const CreateNote = ({
   name,
   description,
   onNameChange,
@@ -31,4 +31,4 @@ const CreateTodo = ({
 );
 
 
-export default CreateTodo;
+export default CreateNote;

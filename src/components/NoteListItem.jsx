@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import Button from './Button';
 
-const TodoListItem = ({ todo, onRemoveTodo, onItemUpdate }) => {
-  const { name: todoName, description: todoDescription, id } = todo;
+const NoteListItem = ({ note, onRemoveNote, onItemUpdate }) => {
+  const { name: noteName, description: noteDescription, id } = note;
 
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(todoName);
-  const [description, setDescription] = useState(todoDescription);
+  const [name, setName] = useState(noteName);
+  const [description, setDescription] = useState(noteDescription);
 
   const onEditButtonClick = () => {
     if (isEditing) {
-      const updatedTodo = { ...todo, name, description };
-      onItemUpdate(updatedTodo);
+      const updatedNote = { ...note, name, description };
+      onItemUpdate(updatedNote);
     }
     setIsEditing(!isEditing);
   };
@@ -25,7 +25,7 @@ const TodoListItem = ({ todo, onRemoveTodo, onItemUpdate }) => {
             onChange={(event) => setName(event.target.value)}
           />
         ) : (
-          <span className="todo-name">{name}</span>
+          <span className="note-name">{name}</span>
         )}
         {isEditing ? (
           <input
@@ -33,14 +33,14 @@ const TodoListItem = ({ todo, onRemoveTodo, onItemUpdate }) => {
             onChange={(event) => setDescription(event.target.value)}
           />
         ) : (
-          <span className="todo-desc">{description}</span>
+          <span className="note-desc">{description}</span>
         )}
       </div>
       <div className="btn-container">
         <Button onClick={onEditButtonClick}>
           {isEditing ? 'Save' : 'Edit'}
         </Button>
-        {!isEditing && <Button onClick={() => onRemoveTodo(id)}>Delete</Button>}
+        {!isEditing && <Button onClick={() => onRemoveNote(id)}>Delete</Button>}
       </div>
     </div>
   );
@@ -48,4 +48,4 @@ const TodoListItem = ({ todo, onRemoveTodo, onItemUpdate }) => {
 
 
 
-export default TodoListItem;
+export default NoteListItem;

@@ -9,6 +9,8 @@ import {
   deleteTodo as deleteTodoMutation,
 } from "./graphql/mutations";
 import Header from "./components/Header";
+// import { HeartSwitch } from "@anatoliygatt/heart-switch";
+
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
@@ -47,79 +49,81 @@ function App() {
     });
   }
 
-  async function onChange(e) {
-    const file = e.target.files[0];
-    try {
-      await Storage.put(file.name, file, {
-        contentType: "image/png",
-      });
-    } catch (error) {
-      console.log("Error uploading file: ", error);
-    }
-  }
+  const current = new Date();
+  const date = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
 
-  <input type="file" onChange={onChange} />;
 
-  const [darkMode, setDarkMode] = useState(false);
+  // const [checked, setChecked] = useState(false);
+
+
+   const [darkMode, setDarkMode] = useState(false);
+
+
+/*     <DarkModeProvider>
+      <Container />
+      </DarkModeProvider> */
 
   return (
     <div className={`${darkMode && "dark-mode"}`}>
+
+
       <div className="main">
         <div className="container-fluid">
-        <Header handleToggleDarkMode={setDarkMode} />
-
+          <Header handleToggleDarkMode={setDarkMode} />
         </div>
 
         <div className="App"></div>
 
         <div className="content container-fluid">
           <div className="note-container">
-          <div className="container-fluid" id="wrap">
-            <div id="note">
-              <div className="text-input">
-              <input
-                id="name-input"
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                placeholder="Note name"
-                value={formData.name}
-              /></div>
-<div className="text-input">
-              <textarea
-                id="content-input"
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-                placeholder="Note description"
-                value={formData.description}
-              />
-</div>
-              <div className="note-btn">
-                <button id="save-btn" onClick={createTodo}>
-                  save
-                </button>
+            <div className="container-fluid" id="wrap">
+              <div id="note">
+                <div className="text-input">
+                  <input
+                    id="name-input"
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    placeholder="Note name"
+                    value={formData.name}
+                  />
+                </div>
+                <div className="text-input">
+                  <textarea
+                    id="content-input"
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
+                    placeholder="Note description"
+                    value={formData.description}
+                  />
+                </div>
+                <div className="note-btn">
+                  <button id="save-btn" onClick={createTodo}>
+                    save
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-          </div>
-<div className="list-container">
-          <div id="list-box">
-            {todos.map((todo) => (
-              <div id="card-wrap">
-                <div id="card" key={todo.id || todo.name}>
-                  <h2>{todo.name}</h2>
-                  <p>{todo.description}</p>
-
-                  <div id="delete-container">
-                    <button id="delete-btn" onClick={() => deleteTodo(todo)}>
-                      Delete
-                    </button>
+          <div className="list-container">
+            <div id="list-box">
+              {todos.map((todo) => (
+                <div id="card-wrap">
+                  <div id="card" key={todo.id || todo.name}>
+                    <h2>{todo.name}</h2>
+                    <p>{todo.description}</p>
+                   
+                    <div id="footer-container">
+                      <button id="delete-btn" onClick={() => deleteTodo(todo)}>
+                        Delete
+                      </button>
+                      <small>{date}</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
