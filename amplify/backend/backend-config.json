@@ -1,25 +1,6 @@
 {
-  "api": {
-    "oltv1": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "apiKeyExpirationDate": "2022-03-27T23:06:33.004Z",
-              "description": "oltv1-api"
-            }
-          },
-          "additionalAuthenticationProviders": []
-        }
-      }
-    }
-  },
   "auth": {
-    "oltv1d1732836": {
+    "oltv2": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -33,7 +14,12 @@
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": []
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
         },
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -45,8 +31,29 @@
       }
     }
   },
+  "api": {
+    "oltv2": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "autholtv2"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        }
+      }
+    }
+  },
   "storage": {
-    "oltv1imagestorage": {
+    "s3oltv2storage325": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": []

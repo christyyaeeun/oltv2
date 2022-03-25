@@ -1,17 +1,8 @@
 export type AmplifyDependentResourcesAttributes = {
-    "api": {
-        "oltv1": {
-            "GraphQLAPIKeyOutput": "string",
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
-        }
-    },
     "auth": {
-        "oltv1d1732836": {
+        "oltv2": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
-            "HostedUIDomain": "string",
-            "OAuthMetadata": "string",
             "UserPoolId": "string",
             "UserPoolArn": "string",
             "UserPoolName": "string",
@@ -19,8 +10,14 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientID": "string"
         }
     },
+    "api": {
+        "oltv2": {
+            "GraphQLAPIIdOutput": "string",
+            "GraphQLAPIEndpointOutput": "string"
+        }
+    },
     "storage": {
-        "oltv1imagestorage": {
+        "s3oltv2storage325": {
             "BucketName": "string",
             "Region": "string"
         }

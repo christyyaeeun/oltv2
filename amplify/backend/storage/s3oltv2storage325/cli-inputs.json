@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3oltv2storage325",
+  "bucketName": "oltv2-storage-3-25",
+  "policyUUID": "c3fe83b0",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

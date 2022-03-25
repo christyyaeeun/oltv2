@@ -1,0 +1,199 @@
+1.    Create a CloudFormation template called ESlogsPermission.yaml:
+
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS cloudFormation template to publish slow logs to Amazon CloudWatch Logs.
+Parameters:
+  LogGroupName:
+    Type: String
+    Description: Please don't change the log group name while updating
+  ESDomainName:
+    Description: A name for the Amazon Elastic Search domain
+    Type: String
+  LambdaFunctionName:
+    Description: Lambda Function Name
+    Type: String
+Resources:
+  AwsLogGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: !Ref LogGroupName
+  LambdaLogGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${LambdaFunctionName}'
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: root1
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: !Sub >-
+                  arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${LambdaFunctionName}:log-stream:*
+        - PolicyName: root2
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                Resource:
+                  - !Sub >-
+                    arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${LambdaFunctionName}
+                  - !Sub >-
+                    arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/${LogGroupName}
+              - Effect: Allow
+                Action:
+                  - 'logs:PutResourcePolicy'
+                  - 'logs:DeleteResourcePolicy'
+                Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*'
+  logGroupPolicyFunction:
+    DependsOn: LambdaLogGroup
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Ref LambdaFunctionName
+      Code:
+        ZipFile: >
+          import urllib3
+
+          import json
+
+          import boto3
+
+          http = urllib3.PoolManager()
+
+          SUCCESS = "SUCCESS"
+
+          FAILED = "FAILED"
+
+          def send(event, context, responseStatus, responseData,
+          physicalResourceId=None, noEcho=False):
+              responseUrl = event['ResponseURL']
+              print(responseUrl)
+              responseBody = {}
+              responseBody['Status'] = responseStatus
+              responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name
+              responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name
+              responseBody['StackId'] = event['StackId']
+              responseBody['RequestId'] = event['RequestId']
+              responseBody['LogicalResourceId'] = event['LogicalResourceId']
+              responseBody['NoEcho'] = noEcho
+              responseBody['Data'] = responseData
+              json_responseBody = json.dumps(responseBody)
+              print("Response body:\n" + json_responseBody)
+              headers = {
+                  'content-type' : '',
+                  'content-length' : str(len(json_responseBody))
+              }
+              try:
+                  response = http.request('PUT',responseUrl,body=json_responseBody.encode('utf-8'),headers=headers)
+                  print("Status code: " + response.reason)
+              except Exception as e:
+                  print("send(..) failed executing requests.put(..): " + str(e))
+          def handler(event, context):
+              logsgroup_policy_name=event['ResourceProperties']['CWLOGS_NAME']
+              cw_log_group_arn=event['ResourceProperties']['CWLOG_ARN']
+              cwlogs = boto3.client('logs')
+              loggroup_policy={
+                  "Version": "2012-10-17",
+                  "Statement": [{
+                  "Sid": "",
+                  "Effect": "Allow",
+                  "Principal": { "Service": "es.amazonaws.com"},
+                  "Action":[
+                  "logs:PutLogEvents",
+                  " logs:PutLogEventsBatch",
+                  "logs:CreateLogStream"
+                      ],
+                  'Resource': f'{cw_log_group_arn}'
+                  }]
+                  }
+              loggroup_policy = json.dumps(loggroup_policy)
+              if(event['RequestType'] == 'Delete'):
+                  print("Request Type:",event['RequestType'])
+                  cwlogs.delete_resource_policy(
+                  policyName=logsgroup_policy_name
+                 )
+                  responseData={}
+                  send(event, context, SUCCESS, responseData)
+              elif(event['RequestType'] == 'Create'):
+                  try:
+                      cwlogs.put_resource_policy(
+                      policyName = logsgroup_policy_name,
+                      policyDocument = loggroup_policy
+                       )
+                      responseData={}
+                      print("Sending response to custom resource")
+                      send(event, context, SUCCESS, responseData)
+                  except Exception as  e:
+                      print('Failed to process:', e)
+                      send(event, context, FAILED, responseData)
+              elif(event['RequestType'] == 'Update'):
+                  try:
+                      responseData={}
+                      print("Update is not supported on this resource")
+                      send(event, context, SUCCESS, responseData)
+                  except Exception as  e:
+                      print('Failed to process:', e)
+                      send(event, context, FAILED, responseData)
+      Handler: index.handler
+      Role: !GetAtt 
+        - LambdaExecutionRole
+        - Arn
+      Runtime: python3.6
+  logGroupPolicycustomresource:
+    Type: 'Custom::LogGroupPolicy'
+    Properties:
+      ServiceToken: !GetAtt 
+        - logGroupPolicyFunction
+        - Arn
+      CWLOGS_NAME: !Ref LogGroupName
+      CWLOG_ARN: !GetAtt 
+        - AwsLogGroup
+        - Arn
+  ElasticsearchDomain:
+    Type: 'AWS::Elasticsearch::Domain'
+    DependsOn: logGroupPolicycustomresource
+    Properties:
+      DomainName: !Ref ESDomainName
+      ElasticsearchVersion: '6.2'
+      EBSOptions:
+        EBSEnabled: true
+        VolumeSize: 10
+        VolumeType: gp2
+      LogPublishingOptions:
+        SEARCH_SLOW_LOGS:
+          CloudWatchLogsLogGroupArn: !GetAtt 
+            - AwsLogGroup
+            - Arn
+          Enabled: true

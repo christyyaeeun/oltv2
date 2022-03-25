@@ -1,0 +1,40 @@
+type Comment @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  body: String
+  user: User @hasOne
+  timelineID: ID! @index(name: "byTimeline")
+}
+
+type Todo @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  name: String!
+  description: String
+  image: String
+}
+
+type Timeline @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  description: String
+  postTime: AWSDateTime
+  author: User @hasOne
+  content: Content @hasOne
+  comments: [Comment] @hasMany(indexName: "byTimeline", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  username: String
+  profilePic: String
+}
+
+enum ContentType {
+  IMAGE
+  VIDEO
+}
+
+type Content @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  source: String
+  type: ContentType
+}
+ 

@@ -9,8 +9,6 @@ import {
   deleteTodo as deleteTodoMutation,
 } from "./graphql/mutations";
 import Header from "./components/Header";
-// import { HeartSwitch } from "@anatoliygatt/heart-switch";
-
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 Amplify.configure(awsExports);
@@ -18,8 +16,12 @@ Amplify.configure(awsExports);
 const initialFormState = { name: "", description: "", image: "" };
 
 function App() {
+
+
   const [todos, setTodos] = useState([]);
   const [formData, setFormData] = useState(initialFormState);
+
+
 
   useEffect(() => {
     fetchTodos();
@@ -53,11 +55,8 @@ function App() {
   const date = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
 
 
+  const [darkMode, setDarkMode] = useState(false);
   // const [checked, setChecked] = useState(false);
-
-
-   const [darkMode, setDarkMode] = useState(false);
-
 
 /*     <DarkModeProvider>
       <Container />
@@ -65,7 +64,6 @@ function App() {
 
   return (
     <div className={`${darkMode && "dark-mode"}`}>
-
 
       <div className="main">
         <div className="container-fluid">
